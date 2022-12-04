@@ -1,10 +1,15 @@
-import './globals.css'
+import NextAuth from '../lib/next-auth';
+import { unstable_getServerSession } from 'next-auth/next';
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
+  const session = await unstable_getServerSession();
+
+  console.log({ session });
+
   return (
     <html lang="en">
       {/*
@@ -12,7 +17,9 @@ export default function RootLayout({
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
       <head />
-      <body>{children}</body>
+      <body>
+        <NextAuth session={session}>{children}</NextAuth>
+      </body>
     </html>
-  )
+  );
 }
